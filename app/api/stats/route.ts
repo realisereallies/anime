@@ -35,8 +35,14 @@ export async function GET() {
   } catch (error) {
     console.error('Error fetching stats:', error);
     return NextResponse.json(
-      { error: 'Failed to fetch statistics' },
+      { 
+        error: 'Failed to fetch statistics',
+        details: error instanceof Error ? error.message : 'Unknown error',
+        timestamp: new Date().toISOString()
+      },
       { status: 500 }
     );
+  } finally {
+    await prisma.$disconnect();
   }
 }
