@@ -23,6 +23,11 @@ export default function AddReviewPage() {
   const [error, setError] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
+  const clearAuthAndReload = () => {
+    localStorage.removeItem('authToken');
+    window.location.reload();
+  };
+
   useEffect(() => {
     // Проверяем аутентификацию
     const token = localStorage.getItem('authToken');
@@ -30,7 +35,25 @@ export default function AddReviewPage() {
       router.push('/login');
       return;
     }
-    setIsAuthenticated(true);
+    
+    // Проверяем валидность токена
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      const currentTime = Math.floor(Date.now() / 1000);
+      
+      // Если токен истек или невалиден, очищаем его
+      if (payload.exp < currentTime) {
+        localStorage.removeItem('authToken');
+        router.push('/login');
+        return;
+      }
+      
+      setIsAuthenticated(true);
+    } catch (error) {
+      // Если токен невалиден, очищаем его
+      localStorage.removeItem('authToken');
+      router.push('/login');
+    }
   }, [router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -59,6 +82,14 @@ export default function AddReviewPage() {
         router.push('/');
       } else {
         const data = await response.json();
+        
+        // Если токен невалиден, очищаем его и перенаправляем на логин
+        if (response.status === 401) {
+          localStorage.removeItem('authToken');
+          router.push('/login');
+          return;
+        }
+        
         setError(data.error || 'Ошибка при добавлении отзыва');
       }
     } catch {

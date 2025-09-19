@@ -53,7 +53,17 @@ export async function POST(request: NextRequest) {
     }
 
     const token = authHeader.substring(7);
-    const decoded = jwt.verify(token, JWT_SECRET) as { userId: string; email: string; name: string };
+    
+    let decoded;
+    try {
+      decoded = jwt.verify(token, JWT_SECRET) as { userId: string; email: string; name: string };
+    } catch (jwtError) {
+      console.error('JWT verification failed:', jwtError);
+      return NextResponse.json(
+        { error: 'Invalid or expired token. Please log in again.' },
+        { status: 401 }
+      );
+    }
 
     const { title, body, rating, animeTitle } = await request.json();
 
