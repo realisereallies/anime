@@ -3,7 +3,7 @@ import { PrismaClient } from '../../generated/prisma';
 import jwt from 'jsonwebtoken';
 
 const prisma = new PrismaClient();
-const JWT_SECRET = 'your-secret-key-here';
+const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-here';
 
 // GET - получить комментарии для отзыва
 export async function GET(request: NextRequest) {

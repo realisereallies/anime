@@ -5,7 +5,7 @@ import jwt from 'jsonwebtoken';
 const prisma = new PrismaClient();
 
 // В реальном приложении это должно быть в переменных окружения
-const JWT_SECRET = 'your-secret-key-here';
+const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-here';
 
 // GET - получить избранные аниме пользователя
 export async function GET(request: NextRequest) {
