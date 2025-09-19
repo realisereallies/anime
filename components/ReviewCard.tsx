@@ -57,13 +57,13 @@ export default function ReviewCard({
     >
       {/* Poster */}
       {posterUrl && (
-        <div className="w-full h-48 bg-pink-50 relative overflow-hidden">
+        <div className="w-full h-40 md:h-48 bg-pink-50 relative overflow-hidden">
           {!imageError ? (
             <Image 
               src={posterUrl} 
               alt={`Постер ${animeTitle}`}
               fill
-              sizes="(max-width: 768px) 100vw, 50vw"
+              sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 50vw"
               className="object-cover !bg-transparent"
               style={{ backgroundColor: 'transparent' }}
               priority
@@ -72,47 +72,47 @@ export default function ReviewCard({
           ) : (
             <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-pink-400 to-rose-500">
               <div className="text-white text-center">
-                <div className="text-4xl mb-2">🎬</div>
-                <div className="text-sm font-medium">{animeTitle}</div>
+                <div className="text-3xl md:text-4xl mb-2">🎬</div>
+                <div className="text-xs md:text-sm font-medium">{animeTitle}</div>
               </div>
             </div>
           )}
-          <div className="absolute top-2 right-2 bg-pink-700 bg-opacity-80 text-white px-3 py-1 rounded-full text-sm font-medium">
+          <div className="absolute top-2 right-2 bg-pink-700 bg-opacity-80 text-white px-2 md:px-3 py-1 rounded-full text-xs md:text-sm font-medium">
             {animeTitle}
           </div>
         </div>
       )}
       
       {/* Content */}
-      <div className="p-6">
-        <div className="flex justify-between items-start mb-4">
-          <h3 className="text-xl font-semibold text-pink-800">{title}</h3>
-          <div className="text-yellow-400 text-lg font-bold">
+      <div className="p-4 md:p-6">
+        <div className="flex justify-between items-start mb-3 md:mb-4">
+          <h3 className="text-lg md:text-xl font-semibold text-pink-800 pr-2">{title}</h3>
+          <div className="text-yellow-400 text-sm md:text-lg font-bold flex-shrink-0">
             {renderStars(rating)}
           </div>
         </div>
         
-        <p className="text-pink-700 mb-4 line-clamp-3 leading-relaxed">{body}</p>
+        <p className="text-pink-700 mb-3 md:mb-4 line-clamp-3 leading-relaxed text-sm md:text-base">{body}</p>
         
-        <div className="flex justify-between items-center text-sm text-pink-600">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center text-xs md:text-sm text-pink-600 gap-1 sm:gap-0">
           <span className="font-medium">Автор: {authorName}</span>
           <span>{formatDate(createdAt)}</span>
         </div>
         
         {/* Stats */}
         {_count && (
-          <div className="flex items-center space-x-4 mt-3 pt-3 border-t border-pink-100">
+          <div className="flex items-center justify-center sm:justify-start space-x-3 md:space-x-4 mt-3 pt-3 border-t border-pink-100">
             <div className="flex items-center space-x-1 text-green-600">
-              <span>👍</span>
-              <span className="text-sm">{_count.likes}</span>
+              <span className="text-sm">👍</span>
+              <span className="text-xs md:text-sm">{_count.likes}</span>
             </div>
             <div className="flex items-center space-x-1 text-red-600">
-              <span>👎</span>
-              <span className="text-sm">{_count.dislikes}</span>
+              <span className="text-sm">👎</span>
+              <span className="text-xs md:text-sm">{_count.dislikes}</span>
             </div>
             <div className="flex items-center space-x-1 text-blue-600">
-              <span>💬</span>
-              <span className="text-sm">{_count.comments}</span>
+              <span className="text-sm">💬</span>
+              <span className="text-xs md:text-sm">{_count.comments}</span>
             </div>
           </div>
         )}

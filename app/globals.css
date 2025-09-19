@@ -30,3 +30,26 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* Mobile responsive styles */
+@media (max-width: 768px) {
+  body {
+    background-attachment: scroll;
+  }
+}
+
+/* Extra small mobile devices (360px and below) */
+@media (max-width: 360px) {
+  body {
+    font-size: 14px;
+  }
+  
+  /* Ensure text doesn't overflow on very small screens */
+  .text-xs {
+    font-size: 0.7rem;
+  }
+  
+  .text-sm {
+    font-size: 0.8rem;
+  }
+}

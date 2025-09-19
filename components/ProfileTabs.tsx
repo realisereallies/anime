@@ -89,11 +89,11 @@ export default function ProfileTabs({ userReviews, favoriteAnime, user }: Profil
 
   return (
     <div className="bg-white rounded-xl shadow-lg border border-pink-200 mb-8">
-              <div className="border-b border-pink-200">
-        <nav className="flex space-x-8 px-6">
+      <div className="border-b border-pink-200">
+        <nav className="flex overflow-x-auto space-x-2 sm:space-x-8 px-4 sm:px-6">
           <button
             onClick={() => setActiveTab('profile')}
-            className={`py-4 px-1 border-b-2 font-medium text-sm ${
+            className={`py-3 sm:py-4 px-2 sm:px-1 border-b-2 font-medium text-xs sm:text-sm whitespace-nowrap ${
               activeTab === 'profile'
                 ? 'border-pink-500 text-pink-600'
                 : 'border-transparent text-pink-400 hover:text-pink-600 hover:border-pink-300'
@@ -103,7 +103,7 @@ export default function ProfileTabs({ userReviews, favoriteAnime, user }: Profil
           </button>
           <button
             onClick={() => setActiveTab('reviews')}
-            className={`py-4 px-1 border-b-2 font-medium text-sm ${
+            className={`py-3 sm:py-4 px-2 sm:px-1 border-b-2 font-medium text-xs sm:text-sm whitespace-nowrap ${
               activeTab === 'reviews'
                 ? 'border-pink-500 text-pink-600'
                 : 'border-transparent text-pink-400 hover:text-pink-600 hover:border-pink-300'
@@ -113,7 +113,7 @@ export default function ProfileTabs({ userReviews, favoriteAnime, user }: Profil
           </button>
           <button
             onClick={() => setActiveTab('favorites')}
-            className={`py-4 px-1 border-b-2 font-medium text-sm ${
+            className={`py-3 sm:py-4 px-2 sm:px-1 border-b-2 font-medium text-xs sm:text-sm whitespace-nowrap ${
               activeTab === 'favorites'
                 ? 'border-pink-500 text-pink-600'
                 : 'border-transparent text-pink-400 hover:text-pink-600 hover:border-pink-300'
@@ -123,7 +123,7 @@ export default function ProfileTabs({ userReviews, favoriteAnime, user }: Profil
           </button>
           <button
             onClick={() => setActiveTab('settings')}
-            className={`py-4 px-1 border-b-2 font-medium text-sm ${
+            className={`py-3 sm:py-4 px-2 sm:px-1 border-b-2 font-medium text-xs sm:text-sm whitespace-nowrap ${
               activeTab === 'settings'
                 ? 'border-pink-500 text-pink-600'
                 : 'border-transparent text-pink-400 hover:text-pink-600 hover:border-pink-300'
@@ -135,7 +135,7 @@ export default function ProfileTabs({ userReviews, favoriteAnime, user }: Profil
       </div>
 
       {/* Tab Content */}
-      <div className="p-6">
+      <div className="p-4 sm:p-6">
         {activeTab === 'profile' && (
           <div>
             <h3 className="text-lg font-semibold text-pink-800 mb-4">Информация о профиле</h3>
@@ -173,9 +173,9 @@ export default function ProfileTabs({ userReviews, favoriteAnime, user }: Profil
 
         {activeTab === 'reviews' && (
           <div>
-            <div className="flex justify-between items-center mb-6">
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-6">
               <h3 className="text-lg font-semibold text-pink-800">Мои отзывы</h3>
-              <button className="bg-pink-500 text-white px-4 py-2 rounded-lg hover:bg-pink-600 transition-colors shadow-md">
+              <button className="bg-pink-500 text-white px-4 py-2 rounded-lg hover:bg-pink-600 transition-colors shadow-md text-sm sm:text-base">
                 Добавить отзыв
               </button>
             </div>
@@ -199,28 +199,28 @@ export default function ProfileTabs({ userReviews, favoriteAnime, user }: Profil
 
         {activeTab === 'favorites' && (
           <div>
-            <div className="flex justify-between items-center mb-6">
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-6">
               <h3 className="text-lg font-semibold text-pink-800">Избранные аниме</h3>
               <Link 
                 href="/add-anime"
-                className="bg-pink-500 text-white px-4 py-2 rounded-lg hover:bg-pink-600 transition-colors font-medium shadow-md"
+                className="bg-pink-500 text-white px-4 py-2 rounded-lg hover:bg-pink-600 transition-colors font-medium shadow-md text-sm sm:text-base"
               >
                 + Добавить аниме
               </Link>
             </div>
-            <div className="grid grid-cols-5 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 sm:gap-4">
               {favorites.map((anime) => (
                 <div key={anime.id} className="text-center group">
-                  <div className="relative overflow-hidden rounded-lg mb-2 h-48">
+                  <div className="relative overflow-hidden rounded-lg mb-2 h-32 sm:h-48">
                     <Image 
                       src={anime.poster} 
                       alt={`Постер ${anime.name}`}
                       fill
-                      sizes="(max-width: 768px) 20vw, 15vw"
+                      sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, 20vw"
                       className="object-cover group-hover:scale-105 transition-transform duration-200 !bg-transparent"
                       style={{ backgroundColor: 'transparent' }}
                     />
-                    <div className="absolute top-2 right-2 z-20">
+                    <div className="absolute top-1 right-1 sm:top-2 sm:right-2 z-20">
                       <button 
                         onClick={(e) => {
                           e.preventDefault();
@@ -232,13 +232,13 @@ export default function ProfileTabs({ userReviews, favoriteAnime, user }: Profil
                         title="Удалить из избранного"
                         type="button"
                       >
-                        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                        <svg className="w-3 h-3 sm:w-4 sm:h-4" fill="currentColor" viewBox="0 0 20 20">
                           <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
                         </svg>
                       </button>
                     </div>
                   </div>
-                  <div className="text-sm font-medium text-pink-800">{anime.name}</div>
+                  <div className="text-xs sm:text-sm font-medium text-pink-800">{anime.name}</div>
                 </div>
               ))}
             </div>

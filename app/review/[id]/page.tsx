@@ -213,7 +213,7 @@ export default function ReviewPage() {
           userName={userName}
           onLogout={handleLogout}
         />
-        <div className="max-w-4xl mx-auto px-8 py-8">
+        <div className="max-w-4xl mx-auto px-4 sm:px-8 py-4 sm:py-8">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-600 mx-auto mb-4"></div>
             <p className="text-pink-600">Загрузка отзыва...</p>
@@ -232,12 +232,12 @@ export default function ReviewPage() {
           userName={userName}
           onLogout={handleLogout}
         />
-        <div className="max-w-4xl mx-auto px-8 py-8">
+        <div className="max-w-4xl mx-auto px-4 sm:px-8 py-4 sm:py-8">
           <div className="text-center">
-            <h1 className="text-2xl font-bold text-pink-800 mb-4">Отзыв не найден</h1>
+            <h1 className="text-xl sm:text-2xl font-bold text-pink-800 mb-4">Отзыв не найден</h1>
             <button
               onClick={() => router.push('/')}
-              className="bg-pink-600 text-white px-6 py-2 rounded-lg hover:bg-pink-700 transition-colors"
+              className="bg-pink-600 text-white px-4 sm:px-6 py-2 rounded-lg hover:bg-pink-700 transition-colors text-sm sm:text-base"
             >
               Вернуться на главную
             </button>
@@ -256,7 +256,7 @@ export default function ReviewPage() {
         onLogout={handleLogout}
       />
 
-      <main className="max-w-4xl mx-auto px-8 py-8">
+      <main className="max-w-4xl mx-auto px-4 sm:px-8 py-4 sm:py-8">
         {/* Back Button */}
         <button
           onClick={() => router.push('/')}
@@ -270,51 +270,51 @@ export default function ReviewPage() {
         <div className="bg-white rounded-xl shadow-lg overflow-hidden">
           {/* Poster */}
           {review.posterUrl && (
-            <div className="w-full h-80 bg-pink-50 relative overflow-hidden">
+            <div className="w-full h-60 sm:h-80 bg-pink-50 relative overflow-hidden">
               {!imageError ? (
                 <Image 
                   src={review.posterUrl} 
                   alt={`Постер ${review.animeTitle}`}
                   fill
-                  sizes="(max-width: 768px) 100vw, 50vw"
+                  sizes="(max-width: 640px) 100vw, (max-width: 768px) 100vw, 50vw"
                   className="object-cover"
                   onError={() => setImageError(true)}
                 />
               ) : (
                 <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-pink-400 to-rose-500">
                   <div className="text-white text-center">
-                    <div className="text-6xl mb-4">🎬</div>
-                    <div className="text-xl font-medium">{review.animeTitle}</div>
+                    <div className="text-4xl sm:text-6xl mb-4">🎬</div>
+                    <div className="text-lg sm:text-xl font-medium">{review.animeTitle}</div>
                   </div>
                 </div>
               )}
-              <div className="absolute top-4 right-4 bg-pink-700 bg-opacity-80 text-white px-4 py-2 rounded-full text-lg font-medium">
+              <div className="absolute top-2 right-2 sm:top-4 sm:right-4 bg-pink-700 bg-opacity-80 text-white px-3 sm:px-4 py-1 sm:py-2 rounded-full text-sm sm:text-lg font-medium">
                 {review.animeTitle}
               </div>
             </div>
           )}
 
           {/* Review Info */}
-          <div className="p-8">
-            <div className="flex justify-between items-start mb-6">
-              <h1 className="text-4xl font-bold text-pink-800">{review.title}</h1>
-              <div className="text-yellow-400 text-3xl font-bold">
+          <div className="p-4 sm:p-8">
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-6 gap-4 sm:gap-0">
+              <h1 className="text-2xl sm:text-4xl font-bold text-pink-800">{review.title}</h1>
+              <div className="text-yellow-400 text-xl sm:text-3xl font-bold">
                 {renderStars(review.rating)}
               </div>
             </div>
             
             <p className="text-pink-700 text-lg leading-relaxed mb-6">{review.body}</p>
             
-            <div className="flex justify-between items-center text-pink-600 mb-6">
-              <span className="font-medium text-lg">Автор: {review.authorName}</span>
-              <span className="text-lg">{formatDate(review.createdAt)}</span>
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center text-pink-600 mb-6 gap-2 sm:gap-0">
+              <span className="font-medium text-base sm:text-lg">Автор: {review.authorName}</span>
+              <span className="text-sm sm:text-lg">{formatDate(review.createdAt)}</span>
             </div>
 
             {/* Like/Dislike Buttons */}
-            <div className="flex items-center space-x-4 mb-8 p-4 bg-pink-50 rounded-lg">
+            <div className="flex items-center justify-center sm:justify-start space-x-3 sm:space-x-4 mb-8 p-3 sm:p-4 bg-pink-50 rounded-lg">
               <button
                 onClick={() => handleLikeDislike('like')}
-                className={`flex items-center space-x-2 px-6 py-3 rounded-lg transition-colors ${
+                className={`flex items-center space-x-2 px-4 sm:px-6 py-2 sm:py-3 rounded-lg transition-colors text-sm sm:text-base ${
                   userAction === 'like' 
                     ? 'bg-green-500 text-white' 
                     : 'bg-white text-green-600 border border-green-300 hover:bg-green-50'
@@ -325,7 +325,7 @@ export default function ReviewPage() {
               </button>
               <button
                 onClick={() => handleLikeDislike('dislike')}
-                className={`flex items-center space-x-2 px-6 py-3 rounded-lg transition-colors ${
+                className={`flex items-center space-x-2 px-4 sm:px-6 py-2 sm:py-3 rounded-lg transition-colors text-sm sm:text-base ${
                   userAction === 'dislike' 
                     ? 'bg-red-500 text-white' 
                     : 'bg-white text-red-600 border border-red-300 hover:bg-red-50'
@@ -337,25 +337,25 @@ export default function ReviewPage() {
             </div>
 
             {/* Comments Section */}
-            <div className="border-t border-pink-200 pt-8">
-              <h2 className="text-2xl font-semibold text-pink-800 mb-6">
+            <div className="border-t border-pink-200 pt-6 sm:pt-8">
+              <h2 className="text-xl sm:text-2xl font-semibold text-pink-800 mb-4 sm:mb-6">
                 Комментарии ({comments.length})
               </h2>
 
               {/* Add Comment Form */}
               {isAuthenticated && (
-                <form onSubmit={handleCommentSubmit} className="mb-8">
+                <form onSubmit={handleCommentSubmit} className="mb-6 sm:mb-8">
                   <textarea
                     value={newComment}
                     onChange={(e) => setNewComment(e.target.value)}
                     placeholder="Напишите ваш комментарий..."
-                    className="w-full p-4 border border-pink-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 resize-none"
-                    rows={4}
+                    className="w-full p-3 sm:p-4 border border-pink-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-500 resize-none text-sm sm:text-base"
+                    rows={3}
                   />
                   <button
                     type="submit"
                     disabled={!newComment.trim()}
-                    className="mt-3 bg-pink-600 text-white px-6 py-2 rounded-lg hover:bg-pink-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="mt-3 bg-pink-600 text-white px-4 sm:px-6 py-2 rounded-lg hover:bg-pink-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base w-full sm:w-auto"
                   >
                     Отправить комментарий
                   </button>
@@ -365,16 +365,16 @@ export default function ReviewPage() {
               {/* Comments List */}
               <div className="space-y-4">
                 {comments.map((comment) => (
-                  <div key={comment.id} className="bg-pink-50 p-6 rounded-lg">
-                    <div className="flex justify-between items-start mb-3">
-                      <span className="font-medium text-pink-800">
+                  <div key={comment.id} className="bg-pink-50 p-4 sm:p-6 rounded-lg">
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-3 gap-1 sm:gap-0">
+                      <span className="font-medium text-pink-800 text-sm sm:text-base">
                         {comment.user.name || comment.user.email}
                       </span>
-                      <span className="text-sm text-pink-600">
+                      <span className="text-xs sm:text-sm text-pink-600">
                         {formatDate(comment.createdAt)}
                       </span>
                     </div>
-                    <p className="text-pink-700">{comment.content}</p>
+                    <p className="text-pink-700 text-sm sm:text-base">{comment.content}</p>
                   </div>
                 ))}
                 {comments.length === 0 && (

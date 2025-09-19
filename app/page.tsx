@@ -68,7 +68,7 @@ export default function Home() {
       />
 
       {/* Main Content */}
-      <main className="max-w-6xl mx-auto px-8 py-8">
+      <main className="max-w-6xl mx-auto px-4 sm:px-8 py-4 sm:py-8">
         {/* Stats */}
         <StatsGrid />
 

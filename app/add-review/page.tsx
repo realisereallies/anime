@@ -139,13 +139,13 @@ export default function AddReviewPage() {
     <div className="min-h-screen bg-gradient-to-br from-pink-50/30 to-rose-50/30">
       {/* Header */}
       <header className="bg-white shadow-lg border-b border-pink-200">
-        <div className="max-w-6xl mx-auto px-8 py-6">
-          <div className="flex justify-between items-center">
+        <div className="max-w-6xl mx-auto px-4 sm:px-8 py-4 sm:py-6">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
             <div>
-              <h1 className="text-3xl font-bold text-pink-800">Добавить отзыв</h1>
-              <p className="text-pink-600 mt-1">Поделитесь своим мнением об аниме</p>
+              <h1 className="text-2xl sm:text-3xl font-bold text-pink-800">Добавить отзыв</h1>
+              <p className="text-pink-600 mt-1 text-sm sm:text-base">Поделитесь своим мнением об аниме</p>
             </div>
-            <div className="flex space-x-4">
+            <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
               <Link 
                 href="/" 
                 className="bg-pink-400 text-white px-6 py-2 rounded-lg hover:bg-pink-500 transition-colors font-medium shadow-md"
@@ -158,8 +158,8 @@ export default function AddReviewPage() {
       </header>
 
       {/* Main Content */}
-      <main className="max-w-3xl mx-auto px-8 py-8">
-        <div className="bg-white rounded-xl shadow-lg border border-pink-200 p-8">
+      <main className="max-w-3xl mx-auto px-4 sm:px-8 py-4 sm:py-8">
+        <div className="bg-white rounded-xl shadow-lg border border-pink-200 p-4 sm:p-8">
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Название аниме */}
             <div>
@@ -231,7 +231,7 @@ export default function AddReviewPage() {
             )}
 
             {/* Submit Button */}
-            <div className="flex space-x-4">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
               <button
                 type="submit"
                 disabled={loading}

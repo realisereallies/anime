@@ -43,18 +43,18 @@ const PopularAnime: React.FC<PopularAnimeProps> = ({ animeList = defaultAnimeLis
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-lg border border-pink-200 p-6">
-      <h2 className="text-2xl font-semibold text-pink-800 mb-6">Популярные аниме</h2>
-      <div className="grid grid-cols-5 gap-4">
+    <div className="bg-white rounded-xl shadow-lg border border-pink-200 p-4 md:p-6">
+      <h2 className="text-xl md:text-2xl font-semibold text-pink-800 mb-4 md:mb-6">Популярные аниме</h2>
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 md:gap-4">
         {animeList.map((anime) => (
           <div key={anime.name} className="text-center cursor-pointer group">
-            <div className="relative overflow-hidden rounded-lg mb-2 h-48">
+            <div className="relative overflow-hidden rounded-lg mb-2 h-32 md:h-48">
               {!imageErrors[anime.name] ? (
                 <Image 
                   src={anime.poster} 
                   alt={`Постер ${anime.name}`}
                   fill
-                  sizes="(max-width: 768px) 20vw, 15vw"
+                  sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, 20vw"
                   className="object-cover group-hover:scale-105 transition-transform duration-200 !bg-transparent"
                   priority
                   onError={(e) => {
@@ -66,13 +66,13 @@ const PopularAnime: React.FC<PopularAnimeProps> = ({ animeList = defaultAnimeLis
               ) : (
                 <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-pink-400 to-rose-500">
                   <div className="text-white text-center">
-                    <div className="text-4xl mb-2">🎬</div>
-                    <div className="text-sm font-medium">{anime.name}</div>
+                    <div className="text-2xl md:text-4xl mb-1 md:mb-2">🎬</div>
+                    <div className="text-xs md:text-sm font-medium">{anime.name}</div>
                   </div>
                 </div>
               )}
             </div>
-            <div className="text-sm font-medium text-pink-800">{anime.name}</div>
+            <div className="text-xs md:text-sm font-medium text-pink-800">{anime.name}</div>
             <div className="text-xs text-pink-600">4.5 ★</div>
           </div>
         ))}

@@ -142,18 +142,18 @@ export default function ProfilePage() {
     <div className="min-h-screen bg-gradient-to-br from-pink-50/30 to-rose-50/30">
       {/* Header */}
       <header className="bg-white shadow-lg border-b border-pink-200">
-        <div className="max-w-6xl mx-auto px-8 py-6">
-          <div className="flex justify-between items-center">
+        <div className="max-w-6xl mx-auto px-4 sm:px-8 py-4 sm:py-6">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
             <div>
-              <h1 className="text-3xl font-bold text-pink-800">Личный кабинет</h1>
-              <p className="text-pink-600 mt-1">Управление профилем и отзывами</p>
+              <h1 className="text-2xl sm:text-3xl font-bold text-pink-800">Личный кабинет</h1>
+              <p className="text-pink-600 mt-1 text-sm sm:text-base">Управление профилем и отзывами</p>
             </div>
-            <div className="flex space-x-4">
+            <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
               <button 
                 onClick={() => {
                   window.location.href = '/';
                 }}
-                className="bg-pink-400 text-white px-6 py-2 rounded-lg hover:bg-pink-500 transition-colors font-medium shadow-md"
+                className="bg-pink-400 text-white px-4 sm:px-6 py-2 rounded-lg hover:bg-pink-500 transition-colors font-medium shadow-md text-sm sm:text-base"
               >
                 Назад на главную
               </button>
@@ -162,7 +162,7 @@ export default function ProfilePage() {
                   localStorage.removeItem('authToken');
                   window.location.href = '/login';
                 }}
-                className="bg-rose-500 text-white px-6 py-2 rounded-lg hover:bg-rose-600 transition-colors font-medium shadow-md"
+                className="bg-rose-500 text-white px-4 sm:px-6 py-2 rounded-lg hover:bg-rose-600 transition-colors font-medium shadow-md text-sm sm:text-base"
               >
                 Выйти
               </button>
@@ -172,7 +172,7 @@ export default function ProfilePage() {
       </header>
 
       {/* Main Content */}
-      <main className="max-w-6xl mx-auto px-8 py-8">
+      <main className="max-w-6xl mx-auto px-4 sm:px-8 py-4 sm:py-8">
         {/* Profile Header Component */}
         <ProfileHeader user={user} />
         
