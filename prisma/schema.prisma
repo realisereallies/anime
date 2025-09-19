@@ -1,0 +1,75 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String     @id @default(cuid())
+  email     String     @unique
+  name      String?
+  password  String     // Пароль в открытом виде для пет-проекта
+  createdAt DateTime   @default(now())
+  comments  Comment[]
+  dislikes  Dislike[]
+  favorites Favorite[]
+  likes     Like[]
+  reviews   Review[]
+}
+
+model Review {
+  id         String    @id @default(cuid())
+  title      String
+  body       String
+  rating     Int
+  animeTitle String
+  createdAt  DateTime  @default(now())
+  userId     String
+  comments   Comment[]
+  dislikes   Dislike[]
+  likes      Like[]
+  author     User      @relation(fields: [userId], references: [id])
+}
+
+model Favorite {
+  id         String   @id @default(cuid())
+  animeTitle String
+  posterUrl  String?
+  createdAt  DateTime @default(now())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  content   String
+  createdAt DateTime @default(now())
+  userId    String
+  reviewId  String
+  review    Review   @relation(fields: [reviewId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model Like {
+  id       String @id @default(cuid())
+  userId   String
+  reviewId String
+  review   Review @relation(fields: [reviewId], references: [id])
+  user     User   @relation(fields: [userId], references: [id])
+
+  @@unique([userId, reviewId])
+}
+
+model Dislike {
+  id       String @id @default(cuid())
+  userId   String
+  reviewId String
+  review   Review @relation(fields: [reviewId], references: [id])
+  user     User   @relation(fields: [userId], references: [id])
+
+  @@unique([userId, reviewId])
+}

@@ -2,7 +2,7 @@
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #f3b3d6cb;
 }
 
 @theme inline {
@@ -14,13 +14,19 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #fce7f3;
+    --foreground: #374151;
   }
 }
 
 body {
-  background: var(--background);
+  background: 
+    linear-gradient(rgba(252, 231, 243, 0.7), rgba(253, 242, 248, 0.8)),
+    url('/99px_ru_wallpaper_369356_chetire_rakursa_pauer__power_s_molotom_jablokom.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
