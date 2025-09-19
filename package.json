@@ -10,7 +10,8 @@
     "seed": "npx tsx scripts/seed.ts",
     "postinstall": "prisma generate",
     "db:push": "prisma db push",
-    "db:migrate": "prisma migrate deploy"
+    "db:migrate": "prisma migrate deploy",
+    "setup:prod": "node scripts/setup-production.js"
   },
   "dependencies": {
     "@prisma/client": "^6.14.0",
