@@ -28,6 +28,7 @@ interface ProfileData {
   favoriteAnime: number;
   reviews: Review[];
   favorites: FavoriteAnime[];
+  favoriteReviews: Review[];
 }
 
 // Интерфейс для избранного аниме
@@ -137,6 +138,7 @@ export default function ProfilePage() {
   }));
 
   const favoriteAnime = profileData.favorites || [];
+  const favoriteReviews = profileData.favoriteReviews || [];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-50/30 to-rose-50/30">
@@ -177,7 +179,7 @@ export default function ProfilePage() {
         <ProfileHeader user={user} />
         
         {/* Profile Tabs Component */}
-        <ProfileTabs userReviews={userReviews} favoriteAnime={favoriteAnime} user={user} />
+        <ProfileTabs userReviews={userReviews} favoriteAnime={favoriteAnime} favoriteReviews={favoriteReviews} user={user} />
       </main>
     </div>
   );

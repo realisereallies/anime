@@ -9,30 +9,32 @@ datasource db {
 }
 
 model User {
-  id        String     @id @default(cuid())
-  email     String     @unique
-  name      String?
-  password  String     // Пароль в открытом виде для пет-проекта
-  createdAt DateTime   @default(now())
-  comments  Comment[]
-  dislikes  Dislike[]
-  favorites Favorite[]
-  likes     Like[]
-  reviews   Review[]
+  id              String           @id @default(cuid())
+  email           String           @unique
+  name            String?
+  password        String           // Пароль в открытом виде для пет-проекта
+  createdAt       DateTime         @default(now())
+  comments        Comment[]
+  dislikes        Dislike[]
+  favorites       Favorite[]
+  favoriteReviews FavoriteReview[]
+  likes           Like[]
+  reviews         Review[]
 }
 
 model Review {
-  id         String    @id @default(cuid())
-  title      String
-  body       String
-  rating     Int
-  animeTitle String
-  createdAt  DateTime  @default(now())
-  userId     String
-  comments   Comment[]
-  dislikes   Dislike[]
-  likes      Like[]
-  author     User      @relation(fields: [userId], references: [id])
+  id              String           @id @default(cuid())
+  title           String
+  body            String
+  rating          Int
+  animeTitle      String
+  createdAt       DateTime         @default(now())
+  userId          String
+  comments        Comment[]
+  dislikes        Dislike[]
+  favoriteReviews FavoriteReview[]
+  likes           Like[]
+  author          User             @relation(fields: [userId], references: [id])
 }
 
 model Favorite {
@@ -68,6 +70,17 @@ model Dislike {
   id       String @id @default(cuid())
   userId   String
   reviewId String
+  review   Review @relation(fields: [reviewId], references: [id])
+  user     User   @relation(fields: [userId], references: [id])
+
+  @@unique([userId, reviewId])
+}
+
+model FavoriteReview {
+  id       String @id @default(cuid())
+  userId   String
+  reviewId String
+  createdAt DateTime @default(now())
   review   Review @relation(fields: [reviewId], references: [id])
   user     User   @relation(fields: [userId], references: [id])
 

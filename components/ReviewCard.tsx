@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 interface ReviewCardProps {
@@ -32,6 +32,8 @@ export default function ReviewCard({
   _count,
 }: ReviewCardProps) {
   const [imageError, setImageError] = useState(false);
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const formatDate = (date: Date) => {
@@ -48,6 +50,86 @@ export default function ReviewCard({
 
   const handleCardClick = () => {
     router.push(`/review/${id}`);
+  };
+
+  // Проверяем статус избранного при загрузке компонента
+  useEffect(() => {
+    const checkFavoriteStatus = async () => {
+      try {
+        const token = localStorage.getItem('authToken');
+        if (!token) return;
+
+        const response = await fetch(`/api/favorite-reviews/check?reviewId=${id}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setIsFavorite(data.isFavorite);
+        }
+      } catch (error) {
+        console.error('Error checking favorite status:', error);
+      }
+    };
+
+    checkFavoriteStatus();
+  }, [id]);
+
+  const handleFavoriteToggle = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    if (isLoading) return;
+
+    try {
+      setIsLoading(true);
+      const token = localStorage.getItem('authToken');
+      
+      if (!token) {
+        alert('Необходимо войти в систему');
+        return;
+      }
+
+      if (isFavorite) {
+        // Удаляем из избранного
+        const response = await fetch(`/api/favorite-reviews?reviewId=${id}`, {
+          method: 'DELETE',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (response.ok) {
+          setIsFavorite(false);
+        } else {
+          alert('Ошибка при удалении из избранного');
+        }
+      } else {
+        // Добавляем в избранное
+        const response = await fetch('/api/favorite-reviews', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({ reviewId: id })
+        });
+
+        if (response.ok) {
+          setIsFavorite(true);
+        } else {
+          const errorData = await response.json();
+          alert(errorData.error || 'Ошибка при добавлении в избранное');
+        }
+      }
+    } catch (error) {
+      console.error('Error toggling favorite:', error);
+      alert('Ошибка сети');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -79,6 +161,34 @@ export default function ReviewCard({
           )}
           <div className="absolute top-2 right-2 bg-pink-700 bg-opacity-80 text-white px-2 md:px-3 py-1 rounded-full text-xs md:text-sm font-medium">
             {animeTitle}
+          </div>
+          
+          {/* Кнопка избранного */}
+          <div className="absolute top-2 left-2">
+            <button 
+              onClick={handleFavoriteToggle}
+              disabled={isLoading}
+              className={`p-2 rounded-full transition-all duration-200 ${
+                isFavorite 
+                  ? 'bg-red-500 text-white shadow-lg' 
+                  : 'bg-white bg-opacity-80 text-gray-600 hover:bg-opacity-100'
+              } ${isLoading ? 'opacity-50 cursor-not-allowed' : 'hover:scale-110'}`}
+              title={isFavorite ? 'Удалить из избранного' : 'Добавить в избранное'}
+            >
+              <svg 
+                className="w-4 h-4 md:w-5 md:h-5" 
+                fill={isFavorite ? "currentColor" : "none"} 
+                stroke="currentColor" 
+                viewBox="0 0 24 24"
+              >
+                <path 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round" 
+                  strokeWidth={2} 
+                  d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" 
+                />
+              </svg>
+            </button>
           </div>
         </div>
       )}

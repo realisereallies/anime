@@ -36,6 +36,30 @@ export async function GET(request: NextRequest) {
           orderBy: {
             createdAt: 'desc'
           }
+        },
+        favoriteReviews: {
+          include: {
+            review: {
+              include: {
+                author: {
+                  select: {
+                    name: true,
+                    id: true
+                  }
+                },
+                _count: {
+                  select: {
+                    likes: true,
+                    dislikes: true,
+                    comments: true
+                  }
+                }
+              }
+            }
+          },
+          orderBy: {
+            createdAt: 'desc'
+          }
         }
       }
     });
@@ -76,6 +100,18 @@ export async function GET(request: NextRequest) {
         id: favorite.id,
         name: favorite.animeTitle,
         poster: favorite.posterUrl || 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=150&h=200&fit=crop'
+      })),
+      favoriteReviews: user.favoriteReviews.map(fav => ({
+        id: fav.review.id,
+        title: fav.review.title,
+        body: fav.review.body,
+        rating: fav.review.rating,
+        animeTitle: fav.review.animeTitle,
+        authorName: fav.review.author.name || 'Пользователь',
+        createdAt: fav.review.createdAt,
+        posterUrl: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop',
+        _count: fav.review._count,
+        favoriteId: fav.id
       }))
     };
 

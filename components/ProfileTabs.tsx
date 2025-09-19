@@ -35,6 +35,7 @@ interface User {
 interface ProfileTabsProps {
   userReviews: Review[];
   favoriteAnime: AnimeItem[];
+  favoriteReviews: Review[];
   user: User;
 }
 
@@ -44,7 +45,7 @@ interface AnimeItem {
   poster: string;
 }
 
-export default function ProfileTabs({ userReviews, favoriteAnime, user }: ProfileTabsProps) {
+export default function ProfileTabs({ userReviews, favoriteAnime, favoriteReviews, user }: ProfileTabsProps) {
   const [activeTab, setActiveTab] = useState('profile');
   const [favorites, setFavorites] = useState<AnimeItem[]>(favoriteAnime);
 
@@ -119,7 +120,17 @@ export default function ProfileTabs({ userReviews, favoriteAnime, user }: Profil
                 : 'border-transparent text-pink-400 hover:text-pink-600 hover:border-pink-300'
             }`}
           >
-            Избранное
+            Избранные аниме
+          </button>
+          <button
+            onClick={() => setActiveTab('favoriteReviews')}
+            className={`py-3 sm:py-4 px-2 sm:px-1 border-b-2 font-medium text-xs sm:text-sm whitespace-nowrap ${
+              activeTab === 'favoriteReviews'
+                ? 'border-pink-500 text-pink-600'
+                : 'border-transparent text-pink-400 hover:text-pink-600 hover:border-pink-300'
+            }`}
+          >
+            Избранные отзывы
           </button>
           <button
             onClick={() => setActiveTab('settings')}
@@ -242,6 +253,36 @@ export default function ProfileTabs({ userReviews, favoriteAnime, user }: Profil
                 </div>
               ))}
             </div>
+          </div>
+        )}
+
+        {activeTab === 'favoriteReviews' && (
+          <div>
+            <h3 className="text-lg font-semibold text-pink-800 mb-6">Избранные отзывы</h3>
+            {favoriteReviews.length === 0 ? (
+              <div className="text-center py-8">
+                <div className="text-6xl mb-4">💔</div>
+                <p className="text-pink-600 text-lg">У вас пока нет избранных отзывов</p>
+                <p className="text-pink-500 text-sm mt-2">Нажимайте на сердечки в отзывах, чтобы добавить их в избранное</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 gap-6">
+                {favoriteReviews.map((review) => (
+                  <ReviewCard
+                    key={review.id}
+                    id={review.id}
+                    title={review.title}
+                    body={review.body}
+                    rating={review.rating}
+                    animeTitle={review.animeTitle}
+                    authorName={review.authorName}
+                    createdAt={review.createdAt}
+                    posterUrl={review.posterUrl}
+                    _count={review._count}
+                  />
+                ))}
+              </div>
+            )}
           </div>
         )}
 
