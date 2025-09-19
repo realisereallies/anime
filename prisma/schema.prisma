@@ -16,7 +16,6 @@ model User {
   createdAt       DateTime         @default(now())
   comments        Comment[]
   dislikes        Dislike[]
-  favorites       Favorite[]
   favoriteReviews FavoriteReview[]
   likes           Like[]
   reviews         Review[]
@@ -37,14 +36,6 @@ model Review {
   author          User             @relation(fields: [userId], references: [id])
 }
 
-model Favorite {
-  id         String   @id @default(cuid())
-  animeTitle String
-  posterUrl  String?
-  createdAt  DateTime @default(now())
-  userId     String
-  user       User     @relation(fields: [userId], references: [id])
-}
 
 model Comment {
   id        String   @id @default(cuid())

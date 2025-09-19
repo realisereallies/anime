@@ -9,12 +9,13 @@ export async function GET() {
     const totalReviews = await prisma.review.count();
     
     // Получаем количество уникальных аниме (по названию)
-    const animeCount = await prisma.review.groupBy({
-      by: ['animeTitle'],
-      _count: {
+    const uniqueAnime = await prisma.review.findMany({
+      select: {
         animeTitle: true
-      }
-    }).then(result => result.length);
+      },
+      distinct: ['animeTitle']
+    });
+    const animeCount = uniqueAnime.length;
     
     // Получаем средний рейтинг
     const averageRating = await prisma.review.aggregate({

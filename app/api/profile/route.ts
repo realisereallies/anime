@@ -32,11 +32,6 @@ export async function GET(request: NextRequest) {
           },
           take: 10
         },
-        favorites: {
-          orderBy: {
-            createdAt: 'desc'
-          }
-        },
         favoriteReviews: {
           include: {
             review: {
@@ -85,7 +80,7 @@ export async function GET(request: NextRequest) {
       joinDate: user.createdAt,
       totalReviews,
       averageRating: Math.round(averageRating * 10) / 10,
-      favoriteAnime: user.favorites.length,
+      favoriteAnime: 0,
       reviews: user.reviews.map(review => ({
         id: review.id,
         title: review.title,
@@ -95,11 +90,6 @@ export async function GET(request: NextRequest) {
         authorName: user.name || 'Пользователь',
         createdAt: review.createdAt,
         posterUrl: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop' // Временный постер
-      })),
-      favorites: user.favorites.map(favorite => ({
-        id: favorite.id,
-        name: favorite.animeTitle,
-        poster: favorite.posterUrl || 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=150&h=200&fit=crop'
       })),
       favoriteReviews: user.favoriteReviews.map(fav => ({
         id: fav.review.id,

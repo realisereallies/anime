@@ -27,16 +27,9 @@ interface ProfileData {
   averageRating: number;
   favoriteAnime: number;
   reviews: Review[];
-  favorites: FavoriteAnime[];
   favoriteReviews: Review[];
 }
 
-// Интерфейс для избранного аниме
-interface FavoriteAnime {
-  id: string;
-  name: string;
-  poster: string;
-}
 
 export default function ProfilePage() {
   const [profileData, setProfileData] = useState<ProfileData | null>(null);
@@ -137,7 +130,6 @@ export default function ProfilePage() {
     createdAt: new Date(review.createdAt)
   }));
 
-  const favoriteAnime = profileData.favorites || [];
   const favoriteReviews = (profileData.favoriteReviews || []).map(review => ({
     ...review,
     createdAt: new Date(review.createdAt)
@@ -182,7 +174,7 @@ export default function ProfilePage() {
         <ProfileHeader user={user} />
         
         {/* Profile Tabs Component */}
-        <ProfileTabs userReviews={userReviews} favoriteAnime={favoriteAnime} favoriteReviews={favoriteReviews} user={user} />
+        <ProfileTabs userReviews={userReviews} favoriteReviews={favoriteReviews} user={user} />
       </main>
     </div>
   );
