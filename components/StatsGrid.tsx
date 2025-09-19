@@ -7,6 +7,7 @@ interface StatsData {
   animeCount: number;
   averageRating: number;
   userCount: number;
+  favoriteReviewsCount: number;
 }
 
 interface StatsGridProps {
@@ -14,6 +15,7 @@ interface StatsGridProps {
   animeCount?: number;
   averageRating?: number;
   userCount?: number;
+  favoriteReviewsCount?: number;
 }
 
 const StatsGrid: React.FC<StatsGridProps> = (props) => {
@@ -21,7 +23,8 @@ const StatsGrid: React.FC<StatsGridProps> = (props) => {
     totalReviews: props.totalReviews || 0,
     animeCount: props.animeCount || 0,
     averageRating: props.averageRating || 0,
-    userCount: props.userCount || 0
+    userCount: props.userCount || 0,
+    favoriteReviewsCount: props.favoriteReviewsCount || 0
   });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -51,8 +54,8 @@ const StatsGrid: React.FC<StatsGridProps> = (props) => {
 
   if (loading) {
     return (
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-8">
-        {[...Array(4)].map((_, index) => (
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-6 mb-8">
+        {[...Array(5)].map((_, index) => (
           <div key={index} className="bg-white p-4 md:p-6 rounded-lg shadow-sm border animate-pulse">
             <div className="h-6 md:h-8 bg-gray-200 rounded mb-2"></div>
             <div className="h-3 md:h-4 bg-gray-200 rounded"></div>
@@ -64,8 +67,8 @@ const StatsGrid: React.FC<StatsGridProps> = (props) => {
 
   if (error) {
     return (
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-8">
-        <div className="col-span-2 md:col-span-4 bg-red-50 p-4 md:p-6 rounded-lg border border-red-200">
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-6 mb-8">
+        <div className="col-span-2 md:col-span-5 bg-red-50 p-4 md:p-6 rounded-lg border border-red-200">
           <div className="text-red-600 text-sm md:text-base">Ошибка загрузки статистики: {error}</div>
         </div>
       </div>
@@ -73,7 +76,7 @@ const StatsGrid: React.FC<StatsGridProps> = (props) => {
   }
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-8">
+    <div className="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-6 mb-8">
       <div className="bg-white p-4 md:p-6 rounded-xl shadow-lg border border-pink-100 hover:shadow-xl transition-shadow">
         <div className="text-2xl md:text-3xl font-bold text-pink-500 mb-2">{stats.totalReviews}</div>
         <div className="text-pink-700 font-medium text-sm md:text-base">Всего отзывов</div>
@@ -85,6 +88,10 @@ const StatsGrid: React.FC<StatsGridProps> = (props) => {
       <div className="bg-white p-4 md:p-6 rounded-xl shadow-lg border border-pink-100 hover:shadow-xl transition-shadow">
         <div className="text-2xl md:text-3xl font-bold text-pink-400 mb-2">{stats.averageRating}</div>
         <div className="text-pink-600 font-medium text-sm md:text-base">Средний рейтинг</div>
+      </div>
+      <div className="bg-white p-4 md:p-6 rounded-xl shadow-lg border border-pink-100 hover:shadow-xl transition-shadow">
+        <div className="text-2xl md:text-3xl font-bold text-rose-600 mb-2">{stats.favoriteReviewsCount}</div>
+        <div className="text-rose-700 font-medium text-sm md:text-base">Избранных отзывов</div>
       </div>
       <div className="bg-white p-4 md:p-6 rounded-xl shadow-lg border border-pink-100 hover:shadow-xl transition-shadow">
         <div className="text-2xl md:text-3xl font-bold text-pink-500 mb-2">{stats.userCount.toLocaleString()}</div>

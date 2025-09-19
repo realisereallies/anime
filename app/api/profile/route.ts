@@ -70,6 +70,7 @@ export async function GET(request: NextRequest) {
     const averageRating = user.reviews.length > 0 
       ? user.reviews.reduce((sum, review) => sum + review.rating, 0) / user.reviews.length
       : 0;
+    const favoriteReviewsCount = user.favoriteReviews.length;
 
     // Формируем данные профиля
     const profileData = {
@@ -80,7 +81,7 @@ export async function GET(request: NextRequest) {
       joinDate: user.createdAt,
       totalReviews,
       averageRating: Math.round(averageRating * 10) / 10,
-      favoriteAnime: 0,
+      favoriteAnime: favoriteReviewsCount,
       reviews: user.reviews.map(review => ({
         id: review.id,
         title: review.title,

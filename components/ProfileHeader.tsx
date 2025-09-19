@@ -55,7 +55,7 @@ export default function ProfileHeader({ user }: ProfileHeaderProps) {
             </div>
             <div className="text-center">
               <div className="text-lg sm:text-2xl font-bold text-pink-700">{user.favoriteAnime}</div>
-              <div className="text-xs sm:text-sm text-pink-500">В избранном</div>
+              <div className="text-xs sm:text-sm text-pink-500">Избранных отзывов</div>
             </div>
           </div>
         </div>

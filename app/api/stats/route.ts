@@ -27,11 +27,15 @@ export async function GET() {
     // Получаем количество пользователей
     const userCount = await prisma.user.count();
     
+    // Получаем количество избранных отзывов
+    const favoriteReviewsCount = await prisma.favoriteReview.count();
+    
     return NextResponse.json({
       totalReviews,
       animeCount,
       averageRating: Math.round(averageRating * 10) / 10, // Округляем до одного знака после запятой
-      userCount
+      userCount,
+      favoriteReviewsCount
     });
   } catch (error) {
     console.error('Error fetching stats:', error);
