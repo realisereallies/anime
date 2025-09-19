@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { execSync } from 'child_process';
 
-export async function POST() {
+export async function GET() {
   try {
     console.log('🚀 Выполнение миграций базы данных...');
     
