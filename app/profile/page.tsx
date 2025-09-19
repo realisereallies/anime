@@ -138,7 +138,10 @@ export default function ProfilePage() {
   }));
 
   const favoriteAnime = profileData.favorites || [];
-  const favoriteReviews = profileData.favoriteReviews || [];
+  const favoriteReviews = (profileData.favoriteReviews || []).map(review => ({
+    ...review,
+    createdAt: new Date(review.createdAt)
+  }));
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-50/30 to-rose-50/30">

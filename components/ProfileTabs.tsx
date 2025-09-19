@@ -14,6 +14,11 @@ interface Review {
   authorName: string;
   createdAt: Date;
   posterUrl?: string;
+  _count?: {
+    likes: number;
+    dislikes: number;
+    comments: number;
+  };
 }
 
 interface AnimeItem {
@@ -49,8 +54,6 @@ export default function ProfileTabs({ userReviews, favoriteAnime, favoriteReview
   const [activeTab, setActiveTab] = useState('profile');
   const [favorites, setFavorites] = useState<AnimeItem[]>(favoriteAnime);
 
-  // Отладка: выводим данные в консоль
-  console.log('ProfileTabs получил данные:', { userReviews, favoriteAnime, favorites });
 
   const handleRemoveFavorite = async (favoriteId: string) => {
     try {
