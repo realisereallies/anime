@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import StatsGrid from '../components/StatsGrid';
 import PopularAnime from '../components/PopularAnime';
-import LatestReviews from '../components/LatestReviews';
+import LatestReviews, { Review } from '../components/LatestReviews';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { getUserFromToken } from '../utils/jwt';
@@ -13,6 +13,8 @@ export default function Home() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userName, setUserName] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const [reviewsLoading, setReviewsLoading] = useState(true);
 
   useEffect(() => {
     try {
@@ -33,6 +35,49 @@ export default function Home() {
     } finally {
       setIsLoading(false);
     }
+  }, []);
+
+  // Загружаем отзывы
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        const response = await fetch('/api/reviews');
+        if (response.ok) {
+          const data = await response.json();
+          const formattedReviews = data.map((review: { 
+            id: string; 
+            title: string; 
+            body: string; 
+            rating: number; 
+            animeTitle: string; 
+            author: { name: string | null }; 
+            createdAt: string;
+            _count?: {
+              likes: number;
+              dislikes: number;
+              comments: number;
+            };
+          }) => ({
+            id: review.id,
+            title: review.title,
+            body: review.body,
+            rating: review.rating,
+            animeTitle: review.animeTitle,
+            authorName: review.author.name || 'Пользователь',
+            createdAt: review.createdAt,
+            posterUrl: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop',
+            _count: review._count
+          }));
+          setReviews(formattedReviews);
+        }
+      } catch {
+        // Ошибка при загрузке отзывов
+      } finally {
+        setReviewsLoading(false);
+      }
+    };
+
+    fetchReviews();
   }, []);
 
   const handleLogout = () => {
@@ -73,10 +118,10 @@ export default function Home() {
         <StatsGrid />
 
         {/* Latest Reviews */}
-        <LatestReviews />
+        <LatestReviews reviews={reviews} loading={reviewsLoading} />
 
         {/* Popular Anime */}
-        <PopularAnime />
+        <PopularAnime reviews={reviews} />
       </main>
 
       {/* Footer */}

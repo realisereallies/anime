@@ -1,82 +1,93 @@
 'use client';
 
 import Image from 'next/image';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
+import { Review } from './LatestReviews';
 
-interface AnimeItem {
+interface PopularAnimeItem {
   name: string;
-  poster: string;
+  likes: number;
+  reviews: number;
+  rating: number;
 }
 
 interface PopularAnimeProps {
-  animeList?: AnimeItem[];
+  reviews: Review[];
 }
 
-const defaultAnimeList = [
-  { 
-    name: 'Атака Титанов', 
-    poster: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=150&h=200&fit=crop' 
-  },
-  { 
-    name: 'Наруто', 
-    poster: 'https://images.unsplash.com/photo-1613376023733-0a73315d9b06?w=150&h=200&fit=crop' 
-  },
-  { 
-    name: 'One Piece', 
-    poster: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=150&h=200&fit=crop' 
-  },
-  { 
-    name: 'Демон Слэйер', 
-    poster: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=150&h=200&fit=crop' 
-  },
-  { 
-    name: 'Моя Геройская Академия', 
-    poster: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=150&h=200&fit=crop' 
-  }
-];
-
-const PopularAnime: React.FC<PopularAnimeProps> = ({ animeList = defaultAnimeList }) => {
+const PopularAnime: React.FC<PopularAnimeProps> = ({ reviews }) => {
   const [imageErrors, setImageErrors] = useState<Record<string, boolean>>({});
 
   const handleImageError = (animeName: string) => {
     setImageErrors(prev => ({ ...prev, [animeName]: true }));
   };
 
+  // Вычисляем популярные аниме на основе отзывов
+  const popularAnime = useMemo(() => {
+    if (!reviews || reviews.length === 0) {
+      return [];
+    }
+
+    // Группируем отзывы по названию аниме
+    const animeStats = reviews.reduce((acc, review) => {
+      const animeTitle = review.animeTitle;
+      
+      if (!acc[animeTitle]) {
+        acc[animeTitle] = {
+          name: animeTitle,
+          likes: 0,
+          reviews: 0,
+          rating: 0,
+          totalRating: 0
+        };
+      }
+      
+      acc[animeTitle].likes += review._count?.likes || 0;
+      acc[animeTitle].reviews += 1;
+      acc[animeTitle].totalRating += review.rating;
+      
+      return acc;
+    }, {} as Record<string, PopularAnimeItem & { totalRating: number }>);
+
+    // Преобразуем в массив и вычисляем средний рейтинг
+    const animeList = Object.values(animeStats).map(anime => ({
+      name: anime.name,
+      likes: anime.likes,
+      reviews: anime.reviews,
+      rating: Math.round((anime.totalRating / anime.reviews) * 10) / 10
+    }));
+
+    // Сортируем по количеству лайков и берем топ-5
+    return animeList
+      .sort((a, b) => b.likes - a.likes)
+      .slice(0, 5);
+  }, [reviews]);
+
   return (
     <div className="bg-white rounded-xl shadow-lg border border-pink-200 p-4 md:p-6">
       <h2 className="text-xl md:text-2xl font-semibold text-pink-800 mb-4 md:mb-6">Популярные аниме</h2>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 md:gap-4">
-        {animeList.map((anime) => (
-          <div key={anime.name} className="text-center cursor-pointer group">
-            <div className="relative overflow-hidden rounded-lg mb-2 h-32 md:h-48">
-              {!imageErrors[anime.name] ? (
-                <Image 
-                  src={anime.poster} 
-                  alt={`Постер ${anime.name}`}
-                  fill
-                  sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, 20vw"
-                  className="object-cover group-hover:scale-105 transition-transform duration-200 !bg-transparent"
-                  priority
-                  onError={(e) => {
-                    console.error('PopularAnime image failed to load:', anime.name, anime.poster, e);
-                    handleImageError(anime.name);
-                  }}
-                  onLoad={() => console.log('PopularAnime image loaded successfully:', anime.name, anime.poster)}
-                />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-pink-400 to-rose-500">
+      {popularAnime.length > 0 ? (
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 md:gap-4">
+          {popularAnime.map((anime) => (
+            <div key={anime.name} className="text-center cursor-pointer group">
+              <div className="relative overflow-hidden rounded-lg mb-2 h-32 md:h-48">
+                <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-green-400 to-emerald-500">
                   <div className="text-white text-center">
                     <div className="text-2xl md:text-4xl mb-1 md:mb-2">🎬</div>
                     <div className="text-xs md:text-sm font-medium">{anime.name}</div>
                   </div>
                 </div>
-              )}
+              </div>
+              <div className="text-xs md:text-sm font-medium text-pink-800">{anime.name}</div>
+              <div className="text-xs text-pink-600">{anime.rating} ★</div>
             </div>
-            <div className="text-xs md:text-sm font-medium text-pink-800">{anime.name}</div>
-            <div className="text-xs text-pink-600">4.5 ★</div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      ) : (
+        <div className="text-center py-8">
+          <p className="text-pink-600">Пока нет данных для отображения популярных аниме</p>
+        </div>
+      )}
     </div>
   );
 };
